@@ -1,15 +1,24 @@
 #pragma once
 
 #include <string>
+#include <map>
+#include <vector>
+#include <set>
 
 using namespace std;
 
 class AdjacencyList {
     private:
-    //Think about what member variables you need to initialize
+        map<string, vector<pair<string, double>>> graph;
+        map<string, double> ranks;
+        map<string, int> outDegree;
+        map<string, set<string>> inDegree;
     public:
-    //Think about what helper functions you will need in the algorithm
-    string PageRank(int n);
+        string PageRank(int n);
+        void addEdge(const string& from, const string& to);
+        map<string, vector<pair<string, double>>> getGraph();
+        map<string, int> getOutDegree();
+        map<string, set<string>> getInDegree();
 };
 
 // This class and method are optional.

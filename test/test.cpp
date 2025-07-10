@@ -1,46 +1,69 @@
-#include <catch2/catch_test_macros.hpp>
-#include <iostream>
+//Lathan Price UFID: 98128597
 
-// change if you choose to use a different header name
+#define CATCH_CONFIG_MAIN
+#include "catch/catch_amalgamated.hpp"
+#include <iostream>
+#include <sstream>
+#include <string>
+
 #include "AdjacencyList.h"
 
 using namespace std;
 
-// the syntax for defining a test is below. It is important for the name to be
-// unique, but you can group multiple tests with [tags]. A test can have
-// [multiple][tags] using that syntax.
-TEST_CASE("Example Test Name - Change me!", "[tag]") {
-  // instantiate any class members that you need to test here
-  int one = 1;
+//test 1
+TEST_CASE("adding edges and graph structure", "[structure]") {
+  AdjacencyList aList;
+  aList.addEdge("a.com", "b.com");
+  aList.addEdge("a.com", "c.com"); //adding two edges
 
-  // anything that evaluates to false in a REQUIRE block will result in a
-  // failing test
-  REQUIRE(one == 0); // fix me!
-
-  // all REQUIRE blocks must evaluate to true for the whole test to pass
-  REQUIRE(false); // also fix me!
+  auto graph = aList.getGraph();
+  REQUIRE(graph["a.com"].size() == 2);  //checking size
+  REQUIRE(graph["a.com"][0].first == "b.com");  //checking edge is correct
+  REQUIRE(graph["a.com"][1].first == "c.com");  //checking edge is correct
 }
 
-TEST_CASE("Test 2", "[tag]") {
-  // you can also use "sections" to share setup code between tests, for example:
-  int one = 1;
+//test 2
+TEST_CASE("duplicate edges", "[structure]"){
+  AdjacencyList aList;
+  aList.addEdge("a.com", "b.com");
+  aList.addEdge("a.com", "b.com"); //adding duplicate edge
 
-  SECTION("num is 2") {
-    int num = one + 1;
-    REQUIRE(num == 2);
-  };
-
-  SECTION("num is 3") {
-    int num = one + 2;
-    REQUIRE(num == 3);
-  };
-
-  // each section runs the setup code independently to ensure that they don't
-  // affect each other
+  auto graph = aList.getGraph();
+  REQUIRE(graph["a.com"].size() == 1);  //should only be one edge
 }
 
-// You must write 5 unique, meaningful tests for credit on the testing section
-// of this project!
+//test 3
+TEST_CASE("outdegree and indegree", "[degrees]"){
+  AdjacencyList aList;
+  aList.addEdge("a.com", "b.com");
+  aList.addEdge("c.com", "b.com"); //adding edges
+
+  auto out = aList.getOutDegree();
+  auto in = aList.getInDegree();  //getting in and out degrees
+
+  REQUIRE(out["a.com"] == 1); //checking a has one out degree
+  REQUIRE(out["c.com"] == 1); //checking c has one out degree
+  REQUIRE(in["b.com"].count("a.com") == 1); //checking b has one in degree from a
+  REQUIRE(in["b.com"].count("c.com") == 1); //checking b has one in degree from c
+}
+
+//test 4
+TEST_CASE("self loop", "[structure]"){
+  AdjacencyList aList;
+  aList.addEdge("a.com", "a.com");  //adding loop
+  auto graph = aList.getGraph();
+  REQUIRE(graph["a.com"].size() == 0);  //no loop allowed
+}
+
+//test 5
+TEST_CASE("single edge added", "[structure]"){
+  AdjacencyList aList;
+  aList.addEdge("a.com", "b.com");  //adding edge
+
+  auto graph = aList.getGraph();
+  REQUIRE(graph["a.com"].size() == 1);  //check size
+  REQUIRE(graph["a.com"][0].first == "b.com");  //check edge
+}
 
 // See the following for an example of how to easily test your output.
 // This uses C++ "raw strings" and assumes your PageRank outputs a string with
