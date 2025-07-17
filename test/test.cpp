@@ -1,5 +1,3 @@
-//Lathan Price UFID: 98128597
-
 #define CATCH_CONFIG_MAIN
 #include "catch/catch_amalgamated.hpp"
 #include <iostream>

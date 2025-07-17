@@ -9,11 +9,12 @@ int main() {
     string from, to;
     cin >> no_of_lines;
     cin >> power_iterations;
+    AdjacencyList graph;
     for (int i = 0; i < no_of_lines; i++) {
         cin >> from;
         cin >> to;
-        // Do Something
+        graph.addEdge(from, to);
     }
-    //Create a graph object
-    // Created_Graph.PageRank(power_iterations);}
+    graph.PageRank(power_iterations);
+    return 0;
 }
